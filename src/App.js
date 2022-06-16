@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 
 import "./app.css";
 import Countries from './components/Countries';
+import Search from './components/Search';
 
 const url = "https://restcountries.com/v3.1/all"; 
 
@@ -39,9 +40,19 @@ const App = () => {
 
     setFilteredCountries(filter);
   }
+
+  const handleSearch = (searchValue) => {
+    const value = searchValue.toLowerCase();
+    const newCountries = countries.filter((country) => {
+      const countryName = country.name.common.toLowerCase();
+      return countryName.startsWith(value);
+    })
+    setFilteredCountries(newCountries);
+  }
   
   return <>
   <h1>Country App</h1>
+  <Search onSearch={handleSearch} />
   {isLoading && <h2>Loading....</h2>}
   {error && <p>{error.message}</p>}
   {countries && <Countries countries = {filteredCountries} removeCountry = {handleRemoveCountry}/>}
